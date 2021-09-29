@@ -5,14 +5,16 @@
 
 ## Framework
 
+```
 ├── **clockIn**               // 代码及配置文件目录
-│  ├── clockIn.py         // 打卡脚本，只会执行一次，需要配合类似`cron`等具有支持定时功能的服务实现每日打卡
-│  ├── clockIn_timing.py   // 无需定时服务支持，支持每日打卡
-│  └── config.json        // 配置文件
-├── docker-compose.yml     // docker-compose配置
+│  ├── clockIn.py             // 打卡脚本，只会执行一次，需要配合类似`cron`等具有支持定时功能的服务实现每日打卡
+│  ├── clockIn_timing.py      // 无需定时服务支持，支持每日打卡
+│  └── config.json            // 配置文件
+├── docker-compose.yml        // docker-compose配置
 ├── LICENSE
 ├── README.md 
-└── requirements.txt       // 相关依赖
+└── requirements.txt          // 相关依赖
+```
 
 ## How To Use
 
