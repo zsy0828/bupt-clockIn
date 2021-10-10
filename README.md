@@ -1,20 +1,18 @@
-# bupt-clockIn
+# bupt_clockIn
 北邮疫情自动打卡，支持每日定时打卡，微信推送打卡状态
 
-如果觉得有用就点个⭐吧～
+如果帮到你了就点个:star:吧～
 
 ## Framework
 
-```
 ├── **clockIn**               // 代码及配置文件目录
-│  ├── clockIn.py             // 打卡脚本，只会执行一次，需要配合类似`cron`等具有支持定时功能的服务实现每日打卡
-│  ├── clockIn_timing.py      // 无需定时服务支持，支持每日打卡
-│  └── config.json            // 配置文件
-├── docker-compose.yml        // docker-compose配置
+│  ├── clockIn.py         // 打卡脚本，只会执行一次，需要配合类似`cron`等具有支持定时功能的服务实现每日打卡
+│  ├── clockIn_timing.py   // 无需定时服务支持，支持每日打卡
+│  └── config.json        // 配置文件
+├── docker-compose.yml     // docker-compose配置
 ├── LICENSE
 ├── README.md 
-└── requirements.txt          // 相关依赖
-```
+└── requirements.txt       // 相关依赖
 
 ## How To Use
 
@@ -37,6 +35,31 @@
 ```
 
 在`username`后面填上自己的学号，在`password`后面填上自己的密码，`time`可以修改默认自动打卡的时间，默认是`9：30`，如修改为`08：30`则是每天`8：30`进行打卡，这里注意如果时间只有一位数一定要在前面添加`0`，比如`8：30`是错误的，应该改为`08：30`
+
+**注：项目支持多人打卡**
+
+#### 多人打卡配置
+
+多人打卡只需要仿照如下配置写即可，如果只需要单用户打卡需要删去多余用户
+
+```json
+{
+  "kale": {
+    "username": "",
+    "password": "",
+    "time": "08:00",
+    "appToken": "AT_",
+    "uid": "UID_"
+  },
+  "kale2": {
+    "username": "",
+    "password": "",
+    "time": "08:15",
+    "appToken": "",
+    "uid": ""
+  }
+}
+```
 
 ### 微信推送
 

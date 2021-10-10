@@ -88,7 +88,7 @@ def push_msg(msg: str, js: json):
 
 
 def upload(js: json):
-    clock_in = ClockIn(js["username"], js["password"])
+    clock_in = ClockIn(js["username"], decode_secret(js["password"].encode("utf-8")))
     msg = clock_in.save()
     return msg
 
@@ -99,17 +99,18 @@ def main(js: json):
         msg = upload(js)
         if json.loads(msg)["m"] == "今天已经填报了" or json.loads(msg)["m"] == "操作成功":
             print(time.strftime("%Y-%m-%d %H:%M:%S") + " " + json.loads(msg)["m"])
-            push_msg(time.strftime("%Y-%m-%d %H:%M:%S") + " " + json.loads(msg)["m"], data)
+            push_msg(time.strftime("%Y-%m-%d %H:%M:%S") + " " + json.loads(msg)["m"], js)
             return
         else:
             print(time.strftime("%Y-%m-%d %H:%M:%S") + " " + json.loads(msg)["m"])
-            push_msg(time.strftime("%Y-%m-%d %H:%M:%S") + " " + json.loads(msg)["m"], data)
+            push_msg(time.strftime("%Y-%m-%d %H:%M:%S") + " " + json.loads(msg)["m"], js)
 
 
 if __name__ == '__main__':
     with open(os.path.dirname(__file__) + "/config.json", "r") as f:
         data = json.load(f)
-    schedule.every().day.at(data["time"]).do(main, data)
+    for item in data:
+        schedule.every().day.at(data[item]["time"]).do(main, data[item])
     while 1:
         time.sleep(1)
         schedule.run_pending()

@@ -2,7 +2,7 @@ version: "3.8"
 services:
   app:
     image: python:3.9.7
-    command: sh -c "pip install -r requirements.txt && python clockIn/clockIn_timing.py"
+    command: sh -c "pip install -r requirements.txt && date && python clockIn/clockIn_timing.py"
     working_dir: /app
     volumes:
       - ./:/app

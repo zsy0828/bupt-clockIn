@@ -1,10 +1,11 @@
+import base64
 import json
 import re
 import time
 import os
+from urllib import parse
 
 import requests
-import schedule
 from bs4 import BeautifulSoup
 
 
@@ -63,6 +64,8 @@ class ClockIn:
         res = requests.post(url=self.__upload_url, headers=headers, data=jsonobj)
         return res.text
 
+def decode_secret(secret: str):
+    return parse.unquote(base64.b64decode(secret))
 
 def upload(username, password):
     clock_in = ClockIn(username, password)
@@ -90,16 +93,22 @@ def push_msg(msg: str, js: json):
 def main():
     with open(os.path.dirname(__file__) + "/config.json", "r") as f:
         data = json.load(f)
-    for i in range(3):
-        time.sleep(i * 5)
-        msg = upload(data["username"], data["password"])
-        if json.loads(msg)["m"] == "今天已经填报了" or json.loads(msg)["m"] == "操作成功":
-            print(time.strftime("%Y-%m-%d %H:%M:%S") + " " + json.loads(msg)["m"])
-            push_msg(time.strftime("%Y-%m-%d %H:%M:%S") + " " + json.loads(msg)["m"], data)
-            return
-        else:
-            print(time.strftime("%Y-%m-%d %H:%M:%S") + " " + json.loads(msg)["m"])
-            push_msg(time.strftime("%Y-%m-%d %H:%M:%S") + " " + json.loads(msg)["m"], data)
+    count = 0
+    for item in data:
+        for i in range(3):
+            time.sleep(i * 5)
+            msg = upload(data[item]["username"], decode_secret(data[item]["password"].encode("utf-8")))
+            if json.loads(msg)["m"] == "今天已经填报了" or json.loads(msg)["m"] == "操作成功":
+                print(time.strftime("%Y-%m-%d %H:%M:%S") + " " + json.loads(msg)["m"])
+                push_msg(time.strftime("%Y-%m-%d %H:%M:%S") + " " + json.loads(msg)["m"], data[item])
+                count += 1
+                if count == len(data):
+                    return
+                else:
+                    break
+            else:
+                print(time.strftime("%Y-%m-%d %H:%M:%S") + " " + json.loads(msg)["m"])
+                push_msg(time.strftime("%Y-%m-%d %H:%M:%S") + " " + json.loads(msg)["m"], data[item])
 
 
 if __name__ == '__main__':
