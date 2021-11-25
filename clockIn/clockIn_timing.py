@@ -66,10 +66,6 @@ class ClockIn:
         return res.text
 
 
-def decode_secret(secret: str):
-    return parse.unquote(base64.b64decode(secret))
-
-
 def push_msg(msg: str, js: json):
     push_url = "http://wxpusher.zjiecode.com/api/send/message"
     headers = {
@@ -88,7 +84,7 @@ def push_msg(msg: str, js: json):
 
 
 def upload(js: json):
-    clock_in = ClockIn(js["username"], decode_secret(js["password"].encode("utf-8")))
+    clock_in = ClockIn(js["username"], js["password"])
     msg = clock_in.save()
     return msg
 
