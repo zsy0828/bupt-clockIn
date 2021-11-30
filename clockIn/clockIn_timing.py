@@ -50,13 +50,18 @@ class ClockIn:
         res = BeautifulSoup(self.__get_html(), "html.parser")
         script = list(res.select("script[type='text/javascript']"))[1]
         pattern = re.compile(r"oldInfo: {.*?},$", re.MULTILINE | re.DOTALL)
-        s = json.loads(re.findall(pattern, str(script))[0][9:-1])
+        try:
+            s = json.loads(re.findall(pattern, str(script))[0][9:-1])
+        except:
+            return ""
         s["created"] = int(time.time())
         s["date"] = time.strftime("%Y%m%d")
         return s
 
     def save(self):
         jsonobj = self.__get_old_info()
+        if jsonobj == "":
+            return ""
         headers = {
             "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 "
                           "Safari/537.36",
@@ -93,7 +98,10 @@ def main(js: json):
     for i in range(3):
         time.sleep(i * 5)
         msg = upload(js)
-        if json.loads(msg)["m"] == "今天已经填报了" or json.loads(msg)["m"] == "操作成功":
+        if msg == "":
+            print(time.strftime("%Y-%m-%d %H:%M:%S") + " " + "打卡失败！！！！")
+            push_msg(time.strftime("%Y-%m-%d %H:%M:%S") + " " + "打卡失败！！！！", data[item])
+        elif json.loads(msg)["m"] == "今天已经填报了" or json.loads(msg)["m"] == "操作成功":
             print(time.strftime("%Y-%m-%d %H:%M:%S") + " " + json.loads(msg)["m"])
             push_msg(time.strftime("%Y-%m-%d %H:%M:%S") + " " + json.loads(msg)["m"], js)
             return
