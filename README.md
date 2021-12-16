@@ -6,7 +6,7 @@
 ## Framework
 
 ```
-├── **clockIn**               // 代码及配置文件目录
+├── clockIn                   // 代码及配置文件目录
 │  ├── clockIn.py             // 打卡脚本，只会执行一次，需要配合类似`cron`等具有支持定时功能的服务实现每日打卡
 │  ├── clockIn_timing.py      // 无需定时服务支持，支持每日打卡
 │  └── config.json            // 配置文件
@@ -22,7 +22,7 @@
 
 首先拉取项目：
 
-`git clone https://github.com/KaleW515/bupt_clockIn.git`
+`git clone https://github.com/KaleW515/bupt-clockIn.git`
 
 项目目录中的`config.json`文件是配置文件，首先需要修改配置文件：
 
@@ -99,7 +99,7 @@
 
 - 设置定时任务，例如
 
-  `30 9 * * * python /home/kale/bupt_clockIn/clockIn.py`
+  `30 9 * * * python /home/kale/bupt-clockIn/clockIn.py`
 
   即可在每日的9点30分进行自动打卡
 
