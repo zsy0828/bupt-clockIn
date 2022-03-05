@@ -1,9 +1,7 @@
-import base64
 import json
 import re
 import os
 import time
-from urllib import parse
 
 import requests
 import schedule

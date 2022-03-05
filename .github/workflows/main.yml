@@ -1,0 +1,25 @@
+name: 'bupt-clockIn'
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '01 16 * * *'
+
+jobs:
+  clockIn:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout codes'
+        uses: actions/checkout@v2
+      - name: 'Set python'
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.8'
+      - name: 'Install dependencies'
+        run: pip install -r requirements.txt
+      - name: 'Start clockIn'
+        env:
+          DATA: ${{ secrets.DATA }}
+        run: python clockIn/clockIn_action.py

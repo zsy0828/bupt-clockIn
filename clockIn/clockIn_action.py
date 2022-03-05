@@ -2,6 +2,8 @@ import json
 import re
 import time
 import os
+from datetime import datetime
+import pytz
 
 import requests
 from bs4 import BeautifulSoup
@@ -92,27 +94,36 @@ def push_msg(msg: str, js: json):
 
 
 def main():
-    with open(os.path.dirname(__file__) + "/config.json", "r") as f:
-        data = json.load(f)
+    tz = pytz.timezone('Asia/Shanghai')
+    data = json.loads(os.environ['DATA'])
     count = 0
     for item in data:
         for i in range(3):
             time.sleep(i * 5)
             msg = upload(data[item]["username"], data[item]["password"])
             if msg == "":
-                print(time.strftime("%Y-%m-%d %H:%M:%S") + " " + "打卡失败！！！！")
-                push_msg(time.strftime("%Y-%m-%d %H:%M:%S") + " " + "打卡失败！！！！", data[item])
+                print(datetime.fromtimestamp(int(time.time()), tz).strftime('%Y-%m-%d %H:%M:%S') + " " + "打卡失败！！！！")
+                push_msg(datetime.fromtimestamp(int(time.time()), tz).strftime('%Y-%m-%d %H:%M:%S') + " " + "打卡失败！！！！",
+                         data[item])
             elif json.loads(msg)["m"] == "今天已经填报了" or json.loads(msg)["m"] == "操作成功":
-                print(time.strftime("%Y-%m-%d %H:%M:%S") + " " + json.loads(msg)["m"])
-                push_msg(time.strftime("%Y-%m-%d %H:%M:%S") + " " + json.loads(msg)["m"], data[item])
+                print(
+                    datetime.fromtimestamp(int(time.time()), tz).strftime('%Y-%m-%d %H:%M:%S') + " " + json.loads(msg)[
+                        "m"])
+                push_msg(
+                    datetime.fromtimestamp(int(time.time()), tz).strftime('%Y-%m-%d %H:%M:%S') + " " + json.loads(msg)[
+                        "m"], data[item])
                 count += 1
                 if count == len(data):
                     return
                 else:
                     break
             else:
-                print(time.strftime("%Y-%m-%d %H:%M:%S") + " " + json.loads(msg)["m"])
-                push_msg(time.strftime("%Y-%m-%d %H:%M:%S") + " " + json.loads(msg)["m"], data[item])
+                print(
+                    datetime.fromtimestamp(int(time.time()), tz).strftime('%Y-%m-%d %H:%M:%S') + " " + json.loads(msg)[
+                        "m"])
+                push_msg(
+                    datetime.fromtimestamp(int(time.time()), tz).strftime('%Y-%m-%d %H:%M:%S') + " " + json.loads(msg)[
+                        "m"], data[item])
 
 
 if __name__ == '__main__':
