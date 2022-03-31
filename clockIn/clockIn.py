@@ -15,19 +15,19 @@ def main():
             if data[item]["username"] != "" and data[item]["password"] != "":
                 msg = req_model.upload(data[item]["username"], data[item]["password"])
                 if msg == "":
-                    print(time.strftime("%m-%d %H:%M") + " " + "打卡失败！！！！")
-                    req_model.push_msg(time.strftime("%Y-%m-%d %H:%M") + " " + "打卡失败！！！！", data[item])
+                    print(time.strftime("%H:%M") + " " + "打卡失败！！！！")
+                    req_model.push_msg(time.strftime("%H:%M") + " " + "打卡失败！！！！", data[item])
                 elif json.loads(msg)["m"] == "今天已经填报了" or json.loads(msg)["m"] == "操作成功":
-                    print(time.strftime("%m-%d %H:%M") + " " + json.loads(msg)["m"])
-                    req_model.push_msg(time.strftime("%m-%d %H:%M") + " " + json.loads(msg)["m"], data[item])
+                    print(time.strftime("%H:%M") + " " + json.loads(msg)["m"])
+                    req_model.push_msg(time.strftime("%H:%M") + " " + json.loads(msg)["m"], data[item])
                     count += 1
                     if count == len(data):
                         return
                     else:
                         break
                 else:
-                    print(time.strftime("%m-%d %H:%M") + " " + json.loads(msg)["m"])
-                    req_model.push_msg(time.strftime("%m-%d %H:%M") + " " + json.loads(msg)["m"], data[item])
+                    print(time.strftime("%H:%M") + " " + json.loads(msg)["m"])
+                    req_model.push_msg(time.strftime("%H:%M") + " " + json.loads(msg)["m"], data[item])
 
 
 if __name__ == '__main__':

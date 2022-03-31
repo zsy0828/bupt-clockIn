@@ -18,16 +18,16 @@ def main():
             if data[item]["username"] != "" and data[item]["password"] != "":
                 msg = req_model.upload(data[item]["username"], data[item]["password"])
                 if msg == "":
-                    print(datetime.fromtimestamp(int(time.time()), tz).strftime('%m-%d %H:%M') + " " + "打卡失败！！！！")
+                    print(datetime.fromtimestamp(int(time.time()), tz).strftime('%H:%M') + " " + "打卡失败！！！！")
                     req_model.push_msg(
-                        datetime.fromtimestamp(int(time.time()), tz).strftime('%m-%d %H:%M') + " " + "打卡失败！！！！",
+                        datetime.fromtimestamp(int(time.time()), tz).strftime('%H:%M') + " " + "打卡失败！！！！",
                         data[item])
                 elif json.loads(msg)["m"] == "今天已经填报了" or json.loads(msg)["m"] == "操作成功":
                     print(
-                        datetime.fromtimestamp(int(time.time()), tz).strftime('%m-%d %H:%M') + " " + json.loads(msg)[
+                        datetime.fromtimestamp(int(time.time()), tz).strftime('%H:%M') + " " + json.loads(msg)[
                             "m"])
                     req_model.push_msg(
-                        datetime.fromtimestamp(int(time.time()), tz).strftime('%m-%d %H:%M') + " " + json.loads(msg)[
+                        datetime.fromtimestamp(int(time.time()), tz).strftime('%H:%M') + " " + json.loads(msg)[
                             "m"], data[item])
                     count += 1
                     if count == len(data):
@@ -36,10 +36,10 @@ def main():
                         break
                 else:
                     print(
-                        datetime.fromtimestamp(int(time.time()), tz).strftime('%m-%d %H:%M') + " " + json.loads(msg)[
+                        datetime.fromtimestamp(int(time.time()), tz).strftime('%H:%M') + " " + json.loads(msg)[
                             "m"])
                     req_model.push_msg(
-                        datetime.fromtimestamp(int(time.time()), tz).strftime('%m-%d %H:%M') + " " + json.loads(msg)[
+                        datetime.fromtimestamp(int(time.time()), tz).strftime('%H:%M') + " " + json.loads(msg)[
                             "m"], data[item])
 
 
