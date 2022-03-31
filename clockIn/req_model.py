@@ -9,9 +9,9 @@ from bs4 import BeautifulSoup
 class ClockIn:
     __username = ""
     __password = ""
+    __session = ""
     __login_url = "https://auth.bupt.edu.cn/authserver/login"
     __upload_url = "https://app.bupt.edu.cn/ncov/wap/default/save"
-    __session = requests.session()
     __headers = {
         "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 "
                       "Safari/537.36"
@@ -20,6 +20,7 @@ class ClockIn:
     def __init__(self, _username, _password):
         self.__username = _username
         self.__password = _password
+        self.__session = requests.session()
 
     def __get_execution(self):
         res = self.__session.get(url=self.__login_url, headers=self.__headers)
