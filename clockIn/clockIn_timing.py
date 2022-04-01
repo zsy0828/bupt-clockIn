@@ -11,7 +11,7 @@ def main(js: json):
     for i in range(3):
         time.sleep(i * 5)
         if data[item]["username"] != "" and data[item]["password"] != "":
-            msg = req_model.upload(js)
+            msg = req_model.upload(data[item]["username"], data[item]["password"])
             if msg == "":
                 print(time.strftime("%H:%M") + " " + "打卡失败！！！！")
                 req_model.push_msg(time.strftime("%H:%M") + " " + "打卡失败！！！！", data[item])
