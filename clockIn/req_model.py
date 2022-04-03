@@ -73,8 +73,8 @@ def upload(username, password):
     return msg
 
 
-def push_msg(msg: str, js: json):
-    push_url = "http://wxpusher.zjiecode.com/api/send/message"
+def wx_pusher(msg: str, js: json):
+    wx_pusher_url = "http://wxpusher.zjiecode.com/api/send/message"
     headers = {
         "Content-Type": "application/json"
     }
@@ -86,5 +86,21 @@ def push_msg(msg: str, js: json):
     }
     if js["appToken"] == "" or js["uid"] == "":
         return
-    res = requests.post(url=push_url, headers=headers, json=data)
+    res = requests.post(url=wx_pusher_url, headers=headers, json=data)
     return res
+
+
+def server_push(msg: str, js: json):
+    server_push_url = "https://sctapi.ftqq.com/{}.send?title={}".format(js["sendKey"], msg)
+    headers = {
+        "Content-Type": "application/json"
+    }
+    res = requests.post(url=server_push_url, headers=headers)
+    return res
+
+
+def push_msg(msg: str, js: json):
+    if "sendKey" in js and js["sendKey"] != "":
+        return server_push(msg, js)
+    if "appToken" in js and "uid" in js and js["appToken"] != "" and js["uid"] != "":
+        return wx_pusher(msg, js)
