@@ -129,9 +129,9 @@
 
 1. Fork本仓库，然后进入自己的仓库
 
-2. 准备自己的配置，可以将项目clone下来编辑`config.json`文件，也可以直接在网页编辑，如果熟悉json结构，也可以自己在本地编辑。填好`username`以及`password`，如果需要微信推送，则根据上述微信推送一节中描述，如果是Server酱则填上`sendKey`，如果是WxPusher则填上`appToken`以及`uid`，如果不需要则可以空着，编辑完成后复制全部内容，**此种打卡方式不依赖config.json里规定的内容，所以config.json文件里的内容无需修改，而只与粘贴到github secret的信息相关**
+2. 准备自己的配置，复制`config.json`的内容。**此种打卡方式不依赖config.json里规定的内容，所以config.json文件里的内容无需修改，而只与粘贴到github secret的信息相关**
 
-3. 点击自己仓库右上角的settings，点击左边的Secrets，再点击Actions，选择右上角的New repository secret，如下图，新建一个secret，Name为DATA，在Value里粘贴刚刚复制的配置
+3. 点击自己仓库右上角的settings，点击左边的Secrets，再点击Actions，选择右上角的New repository secret，如下图，新建一个secret，Name为DATA，在Value里粘贴刚刚复制的内容，并补齐对应的信息，如果需要微信推送，则根据上述微信推送一节中描述，如果是Server酱则填上`sendKey`，如果是WxPusher则填上`appToken`以及`uid`，如果不需要则可以空着
 
    ![1](img/1.png)
 

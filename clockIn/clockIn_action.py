@@ -28,6 +28,7 @@ def main():
                     req_model.push_msg(
                         "{} {}".format(datetime.fromtimestamp(int(time.time()), tz).strftime('%H:%M'), json.loads(msg)[
                             "m"]), data[item])
+                    break
                 else:
                     print(
                         "{} {}".format(datetime.fromtimestamp(int(time.time()), tz).strftime('%H:%M'), json.loads(msg)[
