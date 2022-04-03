@@ -1,9 +1,17 @@
 # bupt-clockIn
 北邮疫情自动打卡，支持每日定时打卡，多人打卡，微信推送打卡状态，白嫖github action支持
 
+
 如果帮到你了就点个:star:吧～
 
 **3月31日更新，由于切换到统一登录所造成的打卡失效问题已经修复**
+
+**4月3日更新，支持Server酱微信推送，配置更简单**
+
+- [x] 定时打卡
+- [x] 多人打卡
+- [x] 微信推送（server酱、WxPusher）
+- [x] github action
 
 ## 1. Framework
 
@@ -12,7 +20,8 @@
 │   ├── clockIn_action.py     // github action打卡脚本
 │   ├── clockIn.py            // 打卡脚本，只会执行一次，需要配合类似cron等具有支持定时功能的服务实现每日打卡
 │   ├── clockIn_timing.py     // 无需定时服务支持，支持每日打卡
-│   └── config.json           // 配置文件
+│   ├── config.json           // 配置文件
+│   └── req_model.py          // 请求模型
 ├── docker-compose.yml        // docker compose配置
 ├── img
 ├── LICENSE
@@ -37,7 +46,8 @@
     "password": "",
     "time": "08:00",
     "appToken": "",
-    "uid": ""
+    "uid": "",
+    "sendKey": ""
   }
 }
 ```
@@ -48,7 +58,7 @@
 
 #### 多人打卡
 
-多人打卡只需要仿照如下配置写即可，如果只需要单用户打卡需要删去多余用户
+多人打卡只需要仿照如下配置写即可
 
 ```json
  {
@@ -57,7 +67,8 @@
     "password": "",
     "time": "08:00",
     "appToken": "AT_",
-    "uid": "UID_"
+    "uid": "UID_",
+    "sendKey": ""
   },
   "kale2": {
     "username": "",
@@ -71,17 +82,36 @@
 
 #### 微信推送
 
-如果不需要微信推送服务，则可以忽略该节。
+如果不需要微信推送服务，则可以忽略该节，相关配置中的字段可以为空。项目支持Server酱推送以及WxPusher推送，推荐使用Server酱进行推送，配置非常简单，项目也不会移除对WxPusher的支持。
 
-本项目的微信推送用到了[WxPusher](https://github.com/wxpusher/wxpusher-client)，微信推送需要用到`config.json`配置文件中的`appToken`和`uid`字段。
+##### Server酱
 
-1. 根据 [WxPusher](https://wxpusher.zjiecode.com/docs/#/)的文档首先注册并且创建应用，注册时会提示`appToken`，记录到`config.json`的`appToken`字段中
+1. 点击进入[Server酱](https://sct.ftqq.com/)，微信扫码登录
 
-2. 创建完成后扫码关注应用，根据文档说明拿到自己的`uid`填到`config.json`中的`uid`字段中
+2. 登录成功后复制`SendKey`，将`SendKey`记录到`config.json`中的`sendKey`字段
 
-3. 微信推送服务配置完成
+3. 配置完成
 
    例如：
+
+   ```json
+   {
+     "username": "2021xxxxxx",
+     "password": "xxxxxxxxxx",
+     "time": "09:30",
+     "sendKey": "xxxxx"
+   }
+   ```
+
+##### ~~WxPusher~~
+
+1. ~~根据 [WxPusher](https://wxpusher.zjiecode.com/docs/#/)的文档首先注册并且创建应用，注册时会提示`appToken`，记录到`config.json`的`appToken`字段中~~
+
+2. ~~创建完成后扫码关注应用，根据文档说明拿到自己的`uid`填到`config.json`中的`uid`字段中~~
+
+3. ~~微信推送服务配置完成~~
+
+   ~~例如：~~
 
    ```json
    {
@@ -99,13 +129,13 @@
 
 1. Fork本仓库，然后进入自己的仓库
 
-2. 准备自己的配置，可以将项目clone下来编辑`config.json`文件，也可以直接在网页编辑，如果熟悉json结构，也可以自己在本地编辑。填好`username`以及`password`，如果需要微信推送，则根据上述微信推送一节中描述填上`appToken`以及`uid`，如果不需要则可以空着，编辑完成后复制全部内容，**此种打卡方式不依赖config.json里规定的内容，所以config.json文件里的内容无需修改，而只与粘贴到github secret的信息相关**
+2. 准备自己的配置，可以将项目clone下来编辑`config.json`文件，也可以直接在网页编辑，如果熟悉json结构，也可以自己在本地编辑。填好`username`以及`password`，如果需要微信推送，则根据上述微信推送一节中描述，如果是Server酱则填上`sendKey`，如果是WxPusher则填上`appToken`以及`uid`，如果不需要则可以空着，编辑完成后复制全部内容，**此种打卡方式不依赖config.json里规定的内容，所以config.json文件里的内容无需修改，而只与粘贴到github secret的信息相关**
 
 3. 点击自己仓库右上角的settings，点击左边的Secrets，再点击Actions，选择右上角的New repository secret，如下图，新建一个secret，Name为DATA，在Value里粘贴刚刚复制的配置
 
    ![1](img/1.png)
 
-4. 设置好环境变量后点击你的仓库上方的Actions选项，第一次打开需要点击`I understand...`按钮，确认在Fork的仓库上启用GitHub Actions
+4. 设置好环境变量后点击你的仓库上方的Actions选项，第一次打开可能需要点击`I understand...`按钮，确认在Fork的仓库上启用GitHub Actions
 5. 任意发起一次commit，可以参考以下步骤
    - 项目默认的打卡时间是每天的00:01，由于github action的原因，实际打卡时间可能会延后几十分钟，如果想要更改这个时间，可以更改仓库的`.github/workflows/main.yml`文件，如下图，更改`cron`的前两个字段，项目默认为`01 16`，即代表每天的16:01，由于中国在东八区，所以会加上8个小时，也就是每天的00:01，可以根据自己的需要进行更改，更改完别忘记commit![4](img/4.png)
    - 如果不需要更改打卡时间，可以修改项目的`README.md`文件，如下图，点击`README.md`文件，然后点击右上角的:pen:![3](img/3.png)
