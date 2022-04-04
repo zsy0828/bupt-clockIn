@@ -10,23 +10,23 @@ import req_model
 def main(js: json):
     for i in range(3):
         time.sleep(i * 5)
-        print("now {} clock in {}:".format(item, i))
-        if data[item]["username"] != "" and data[item]["password"] != "":
-            msg = req_model.upload(data[item]["username"], data[item]["password"])
+        if js["username"] != "" and js["password"] != "":
+            msg = req_model.upload(js["username"], js["password"])
             if msg == "":
-                print("{} 打卡失败!!".format(time.strftime("%H:%M")))
-                req_model.push_msg("{} 打卡失败!!".format(time.strftime("%H:%M")), data[item])
+                print(time.strftime("%H:%M") + " " + "打卡失败！！！！")
+                req_model.push_msg(time.strftime("%H:%M") + " " + "打卡失败！！！！", js)
             elif json.loads(msg)["m"] == "今天已经填报了" or json.loads(msg)["m"] == "操作成功":
-                print("{} {}".format(time.strftime("%H:%M"), json.loads(msg)["m"]))
-                req_model.push_msg("{} {}".format(time.strftime("%H:%M"), json.loads(msg)["m"]), js)
+                msg = '{} {} AT {}'.format(js['username'], json.loads(msg)["m"], time.strftime("%H:%M"))
+                print(msg)
+                req_model.push_msg(msg, js)
                 return
             else:
-                print("{} {}".format(time.strftime("%H:%M"), json.loads(msg)["m"]))
-                req_model.push_msg("{} {}".format(time.strftime("%H:%M"), json.loads(msg)["m"]), js)
+                print(time.strftime("%H:%M") + " " + json.loads(msg)["m"])
+                req_model.push_msg(time.strftime("%H:%M") + " " + json.loads(msg)["m"], js)
 
 
 if __name__ == '__main__':
-    with open(os.path.dirname(__file__) + "/config.json", "r") as f:
+    with open(os.path.join(os.path.dirname(__file__), "config.json"), "r") as f:
         data = json.load(f)
     for item in data:
         schedule.every().day.at(data[item]["time"]).do(main, data[item])
