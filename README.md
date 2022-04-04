@@ -39,9 +39,9 @@
 
 1. Fork本仓库，然后进入自己的仓库
 
-2. 准备自己的配置，复制[模板](##相关配置)的内容。
+2. 准备自己的配置，复制[模板](#相关配置)的内容。
 
-3. 点击自己仓库右上角的settings，点击左边的Secrets，再点击Actions，选择右上角的New repository secret，如下图，新建一个secret，Name为DATA，在Value里粘贴刚刚复制的内容，并补齐对应的信息，如果需要微信推送，则根据[微信推送](####微信推送)一节中描述，如果是Server酱则填上`sendKey`，如果是WxPusher则填上`appToken`以及`uid`，如果不需要则可以空着
+3. 点击自己仓库右上角的settings，点击左边的Secrets，再点击Actions，选择右上角的New repository secret，如下图，新建一个secret，Name为DATA，在Value里粘贴刚刚复制的内容，并补齐对应的信息，如果需要微信推送，则根据[微信推送](#微信推送)一节中描述，如果是Server酱则填上`sendKey`，如果是WxPusher则填上`appToken`以及`uid`，如果不需要则可以空着
 
    ![1](img/1.png)
 
