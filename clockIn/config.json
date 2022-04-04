@@ -4,13 +4,12 @@
     "password": "",
     "time": "08:00",
     "appToken": "",
-    "uid": ""
+    "uid": "",
+    "sendKey": ""
   },
   "kale2": {
     "username": "",
     "password": "",
-    "time": "08:15",
-    "appToken": "",
-    "uid": ""
+    "time": "08:15"
   }
 }
