@@ -6,6 +6,8 @@ import time
 import requests
 from bs4 import BeautifulSoup
 
+logging.basicConfig(level=logging.INFO)
+
 
 class ClockIn:
     __username = ""
